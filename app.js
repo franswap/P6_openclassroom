@@ -4,6 +4,15 @@ const express = require('express');
 // Pour que l'application utilise express
 const app = express();
 
+// On importe Mongoose, package facilitant les interactions avec notre base de données
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://sauceenjoyer:tabasco33@piquante.jmz0f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
+
 // ce middleware intercepte toutes les requetes avec un content type json et les mets à disposition dans req.body
 app.use(express.json());
 
