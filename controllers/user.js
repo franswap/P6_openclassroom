@@ -32,7 +32,12 @@ exports.login = (req, res, next) => {
           } // si tout est ok on va revoyer un status 200
           res.status(200).json({
             userId: user._id, // avec l'id de l'utilisateur
-            token: 'TOKEN'
+            // L'utilisateurn lors de sa connection, va recevoir un token encodé depuis le serveur, le serv peut verifier le token pour chaque requete authentifiée
+            token: jwt.sign( //jsonwebtoken est un token d'encodage
+                { userId: user._id }, //userid encodé pour appliquer le bon id à chaque objet créé
+                'RANDOM_TOKEN_SECRET',
+                { expiresIn: '24h' }
+              ) // pour des serv modernes, on priviligie les tokens au sessions et au cookies (notemment due aux applis mobiles)
           });
         })
         .catch(error => res.status(500).json({ error }));
