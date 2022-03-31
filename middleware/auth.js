@@ -5,6 +5,7 @@ module.exports = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET'); //on decode notre token
     const userId = decodedToken.userId; //on extrait l'id du token
+    req.auth = {userId: userId}; // faille d'auth delete
     if (req.body.userId && req.body.userId !== userId) { //on compare l'id utilisateur à celui du token
       throw 'Invalid user ID';
     } else {
