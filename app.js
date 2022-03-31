@@ -41,7 +41,7 @@ app.post('/api/stuff', (req, res, next) =>{
 
 // element dynamique de l'objet de maniere unitaire losquon clique dessus.
 app.get('/api/stuff/:id', (req, res, next) => {
-    Thing.findOne({_id: req.params.id})
+    Thing.findOne({_id: req.params.id}) // FindOne retourne une seul thing sur un systeme de comparaison des id
     .then(thing => res.status(200).json(thing))
     .catch(error => res.status(400).json({ error }));
 });
