@@ -2,21 +2,21 @@ const express = require('express');
 const router = express.Router();
 
 const stuffController = require('../controllers/stuff');
-
+const auth = require('../middleware/auth');
 
 // Pour que les users ajoutent leurs sauces
-router.post('/', stuffController.createThing);
+router.post('/', auth, stuffController.createThing);
 
 // On va creer une route put qui va nous permettre de modifier notre objet
-router.put('/:id', stuffController.modifyThing)
+router.put('/:id', auth, stuffController.modifyThing)
 
 // On va creer une route put qui va nous permettre de supprimer notre objet
-router.delete('/:id', stuffController.deleteThing);
+router.delete('/:id', auth, stuffController.deleteThing);
 
 // element dynamique de l'objet de maniere unitaire losquon clique dessus.
-router.get('/:id', stuffController.getOneThing);
+router.get('/:id', auth, stuffController.getOneThing);
 
 // la methode get va nous chercher tous les éléments 'Things' de notre base
-router.get('/', stuffController.getAllThing);
+router.get('/', auth, stuffController.getAllThing);
 
 module.exports = router;
