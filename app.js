@@ -39,6 +39,22 @@ app.post('/api/stuff', (req, res, next) =>{
     .catch(error => res.status(400).json({error}));
 });
 
+// On va creer une route put qui va nous permettre de modifier notre objet
+app.put('/api/stuff/:id', (res, req, next) => {
+    // UpdateOne va nous permettre de modifier un element de la base de données, le premiere argument c'est l'objet de comparaison et l'autre cest le nouvel objet que l'on envoie
+    Thing.updateOne({ _id: req.params.id}, { ...req.body, _id: req.params.id})
+        .then(() => res.status(200).json({ message: 'objet modifié'}))
+        .catch(error => res.status(400).json({ error }));
+})
+
+// On va creer une route put qui va nous permettre de supprimer notre objet
+app.delete('/api/stuff/:id', (req, res, next) => {
+    // deleteOne va nous permettre de supprimer un élément de notre base de données
+    Thing.deleteOne({ _id: req.params.id })
+      .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+      .catch(error => res.status(400).json({ error }));
+  });
+
 // element dynamique de l'objet de maniere unitaire losquon clique dessus.
 app.get('/api/stuff/:id', (req, res, next) => {
     Thing.findOne({_id: req.params.id}) // FindOne retourne une seul thing sur un systeme de comparaison des id
