@@ -7,7 +7,9 @@ const app = express();
 // On importe Mongoose, package facilitant les interactions avec notre base de données
 const mongoose = require('mongoose');
 
-const stuffRoutes = require('./routes/stuff');
+// On va importer nos routes
+const stuffRoutes = require('./routes/stuff'); // route d'items
+const userRoutes = require('./routes/user'); // route de users
 
 mongoose.connect('mongodb+srv://sauceenjoyer:tabasco33@piquante.jmz0f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -28,5 +30,7 @@ app.use((req, res, next) => {
 
 
   app.use('/api/stuff', stuffRoutes);
+  app.use('/api/auth', userRoutes)
+
 // on l'exporte pour y acceder sur les autres fichiers (notemment le serv node)
 module.exports =app;
