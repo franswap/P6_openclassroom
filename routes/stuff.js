@@ -3,9 +3,10 @@ const router = express.Router();
 
 const stuffController = require('../controllers/stuff');
 const auth = require('../middleware/auth');
+const multer = require('../middleware/multer-config')
 
 // Pour que les users ajoutent leurs sauces
-router.post('/', auth, stuffController.createThing);
+router.post('/', auth, multer, stuffController.createThing);
 
 // On va creer une route put qui va nous permettre de modifier notre objet
 router.put('/:id', auth, stuffController.modifyThing)

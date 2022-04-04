@@ -7,6 +7,9 @@ const app = express();
 // On importe Mongoose, package facilitant les interactions avec notre base de données
 const mongoose = require('mongoose');
 
+// acces au chemin de nos fichiers
+const path = require('path');
+
 // On va importer nos routes
 const stuffRoutes = require('./routes/stuff'); // route d'items
 const userRoutes = require('./routes/user'); // route de users
@@ -28,6 +31,7 @@ app.use((req, res, next) => {
     next();
   });
 
+  app.use('/back_end/images', express.static(path.join(__dirname, 'images')));
 
   app.use('/api/stuff', stuffRoutes);
   app.use('/api/auth', userRoutes)

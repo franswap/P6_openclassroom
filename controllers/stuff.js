@@ -2,10 +2,12 @@
 const Thing = require('../models/Thing');
 
 exports.createThing = (req, res, next) =>{
-    delete req.body._id;
+    const thingObject = JSON.parse(req.body.thing);
+    delete thingObject._id;
     const thing = new Thing({
         // '...' est l'operateur spread, il permet de faire une copîe de tous les elements de req.body
-        ...req.body
+        ...thingObject,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     thing.save() // save enregistre thing dans la base de données
     .then(() => res.status(201).json({ message: 'Objet enregistré'}))
@@ -31,7 +33,7 @@ exports.deleteThing = (req, res, next) => {
             if (thing.userId !== req.auth.userId) {
                 return res.status(401).json({
                     error: new Error('requete non authorisé')
-                })
+                });
             }
             Thing.deleteOne({ _id: req.params.id })
             .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
