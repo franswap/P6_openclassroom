@@ -15,8 +15,13 @@ exports.createThing = (req, res, next) =>{
 };
 
 exports.modifyThing = (res, req, next) => {
+    const thingObject = req.file ?
+    { 
+        ...JSON.parse(req.body.thing),
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : { ...req.body};
     // UpdateOne va nous permettre de modifier un element de la base de données, le premiere argument c'est l'objet de comparaison et l'autre cest le nouvel objet que l'on envoie
-    Thing.updateOne({ _id: req.params.id}, { ...req.body, _id: req.params.id})
+    Thing.updateOne({ _id: req.params.id}, { ...thingObject, _id: req.params.id})
         .then(() => res.status(200).json({ message: 'objet modifié'}))
         .catch(error => res.status(400).json({ error }));
 };

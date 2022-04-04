@@ -9,7 +9,7 @@ const multer = require('../middleware/multer-config')
 router.post('/', auth, multer, stuffController.createThing);
 
 // On va creer une route put qui va nous permettre de modifier notre objet
-router.put('/:id', auth, stuffController.modifyThing)
+router.put('/:id', auth, multer, stuffController.modifyThing)
 
 // On va creer une route put qui va nous permettre de supprimer notre objet
 router.delete('/:id', auth, stuffController.deleteThing);
