@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 
   app.use('/back_end/images', express.static(path.join(__dirname, 'images')));
 
-  app.use('/api/stuff', stuffRoutes);
+  app.use('/api/sauces', stuffRoutes);
   app.use('/api/auth', userRoutes)
 
 // on l'exporte pour y acceder sur les autres fichiers (notemment le serv node)
