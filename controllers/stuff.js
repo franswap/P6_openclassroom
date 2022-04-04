@@ -1,6 +1,8 @@
 // On importe le modele thing que l'on vient de creer:
 const Thing = require('../models/Thing');
 
+const fs = require('fs');
+
 exports.createThing = (req, res, next) =>{
     const thingObject = JSON.parse(req.body.thing);
     delete thingObject._id;
@@ -27,25 +29,17 @@ exports.modifyThing = (res, req, next) => {
 };
 
 exports.deleteThing = (req, res, next) => {
-    // deleteOne va nous permettre de supprimer un élément de notre base de données
-    Thing.findOne({ _id: req.params.id}).then(
-        (thing) => {
-            if (!thing) { //Si on a pas d'objet 
-                return res.status(404).json({
-                    error: new Error('Objet non trouvé')
-                });
-            } // Si l'utilisateur n'est pas le proprietaire de cet objet
-            if (thing.userId !== req.auth.userId) {
-                return res.status(401).json({
-                    error: new Error('requete non authorisé')
-                });
-            }
-            Thing.deleteOne({ _id: req.params.id })
+    Thing.findOne({ _id: req.params.id })
+      .then(thing => {
+        const filename = thing.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${filename}`, () => {
+          Thing.deleteOne({ _id: req.params.id })
             .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
             .catch(error => res.status(400).json({ error }));
-        }
-    )
-};
+        });
+      })
+      .catch(error => res.status(500).json({ error }));
+  };
 
 exports.getOneThing = (req, res, next) => {
     Thing.findOne({_id: req.params.id}) // FindOne retourne une seul thing sur un systeme de comparaison des id
